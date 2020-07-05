@@ -277,7 +277,9 @@ Shader "Hidden/SSRT"
 			float4 frag(v2f input) : SV_Target
 			{
 				float2 uv = input.uv.xy;
-
+				#if !defined(UNITY_UV_STARTS_AT_TOP)
+				uv.y = 1-uv.y;
+				#endif
 				float3 albedo = _LightOnly ? 1 : tex2D(_CameraGBufferTexture0, uv.xy).rgb;
 				float4 GTAOGI = tex2D(_FilterTexture2, uv);
 				float3 ambient = _LightOnly ? 0 : tex2D(_AmbientTexture, uv).rgb;
